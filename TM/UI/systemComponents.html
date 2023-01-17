@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+          <title>System Components</title>
+    </head>
+    <body>
+          <canvas id="canvas" width="500" height="500"></canvas>
+
+            <script>
+                    // Get the canvas element
+                    var canvas = document.getElementById("canvas");
+                        var ctx = canvas.getContext("2d");
+
+                        // Draw a rectangle for the CPU
+                        ctx.fillStyle = "blue";
+                        ctx.fillRect(50, 50, 100, 100);
+                        ctx.strokeRect(50, 50, 100, 100);
+                        ctx.fillStyle = "white";
+                        ctx.font = "20px Arial";
+                        ctx.fillText("CPU", 75, 90);
+
+                        // Draw a rectangle for the RAM
+                        ctx.fillStyle = "green";
+                        ctx.fillRect(250, 50, 100, 100);
+                        ctx.strokeRect(250, 50, 100, 100);
+                        ctx.fillStyle = "white";
+                        ctx.fillText("RAM", 275, 90);
+
+                        // Draw a rectangle for the storage
+                        ctx.fillStyle = "purple";
+                        ctx.fillRect(150, 250, 200, 100);
+                        ctx.strokeRect(150, 250, 200, 100);
+                        ctx.fillStyle = "white";
+                        ctx.fillText("Storage", 200, 290);
+
+                      </script>
+    </body>
+</html>
+

@@ -1,0 +1,53 @@
+/* Style the icon palette */
+.icon-palette {
+        display: flex;
+            flex-wrap: wrap;
+                margin: 10px;
+                
+}
+.icon-palette img, .icon-palette div {
+        width: 50px;
+            height: 50px;
+                margin: 5px;
+                    cursor: pointer;
+                    
+}
+.icon-palette div {
+        display: flex;
+            align-items: center;
+                justify-content: center;
+                    background-color: #ccc;
+                    
+}
+.icon-caption {
+        font-size: 12px;
+            text-align: center;
+            
+}
+
+/* Style the form */
+form {
+        position: absolute;
+            bottom: 0;
+                left: 0;
+                    right: 0;
+                        padding: 10px;
+                            background-color: #f2f2f2;
+                            
+}
+input[type="text"] {
+        padding: 5px;
+            margin: 5px;
+                width: 100%;
+                
+}
+input[type="submit"] {
+        padding: 5px;
+            width: 100%;
+                background-color: #4CAF50;
+                    color: white;
+                        cursor: pointer;
+                        
+}
+
+
