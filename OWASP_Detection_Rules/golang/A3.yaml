@@ -1,0 +1,34 @@
+# This rule looks for an if statement that checks the user's role and 
+# calls a sensitive function or a restrictive function and checks 
+# if the user role has been derived from user input, if it does, 
+# it will raise an alert with the message "Possible broken access control vulnerability detected" 
+rules:
+  - id: broken-access-control
+    message: "Possible broken access control vulnerability detected"
+    pattern: |
+      if {{.UserRole}} == "admin" {
+        {{.SensitiveFunctionCall}}
+      }
+    filters:
+      - {{.UserRole}}
+        - contains: "{{.UserInput}}"
+  - id: broken-access-control
+    message: "Possible broken access control vulnerability detected"
+    pattern: |
+      if {{.UserRole}} != "admin" {
+        {{.RestrictiveFunctionCall}}
+      }
+    filters:
+      - {{.UserRole}}
+        - contains: "{{.UserInput}}"
+  - id: broken-access-control
+    message: "Possible broken access control vulnerability detected"
+    pattern: |
+      if {{.UserRole}} == "admin" {
+         {{.SensitiveFunctionCall}}
+      } else {
+        {{.RestrictiveFunctionCall}}
+      }
+    filters:
+      - {{.UserRole}}
+        - contains: "{{.UserInput}}"

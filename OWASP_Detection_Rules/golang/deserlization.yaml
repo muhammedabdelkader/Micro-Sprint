@@ -1,0 +1,23 @@
+rules:
+##
+# This rule looks for the json.Unmarshal function and checks if it's being called with user input as the first argument and a pointer to a struct as the second argument. If the rule finds such a call, it raises an alert with the message "Possible deserialization vulnerability detected".
+## 
+  - id: deserialization-vulnerability
+    message: "Possible deserialization vulnerability detected"
+    pattern: |
+      json.Unmarshal({{.Input}}, &{{.Struct}})
+##
+# This rule looks for the json.Unmarshal, xml.Unmarshal, yaml.Unmarshal and gob.NewDecoder().Decode function and checks if they're being called with user input as the first argument and a pointer to a struct as the second argument. If the rule finds such a call, it raises an alert with the message "Possible deserialization vulnerability detected".
+##
+  - id: deserialization-vulnerability
+    message: "Possible deserialization vulnerability detected"
+    pattern: |
+      xml.Unmarshal({{.Input}}, &{{.Struct}})
+  - id: deserialization-vulnerability
+    message: "Possible deserialization vulnerability detected"
+    pattern: |
+      yaml.Unmarshal({{.Input}}, &{{.Struct}})
+  - id: deserialization-vulnerability
+    message: "Possible deserialization vulnerability detected"
+    pattern: |
+      gob.NewDecoder({{.Input}}).Decode(&{{.Struct}})

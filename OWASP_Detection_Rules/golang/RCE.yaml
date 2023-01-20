@@ -1,0 +1,11 @@
+rules:
+##
+# This rule looks for the exec.Command function and checks if it's being called with user input as an argument. If the rule finds such a call, it raises an alert with the message "Possible remote code execution vulnerability detected".
+## 
+  - id: rce-vulnerability
+    message: "Possible remote code execution vulnerability detected"
+    pattern: |
+      {{.FunctionCall}}({{.UserInput}})
+    filters:
+      - {{.FunctionCall}}
+        - equals: "exec.Command"

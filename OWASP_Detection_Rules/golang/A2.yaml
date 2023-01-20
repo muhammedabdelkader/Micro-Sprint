@@ -1,0 +1,34 @@
+# This rule looks for calls to the fmt.Fprintf, 
+# fmt.Fprint and ResponseWriter.Write functions and 
+# checks if the parameter (the HTML) contains a variable that 
+# has been derived from user input. If it does, it will raise an alert 
+# with the message "Possible XSS vulnerability detected".
+
+rules:
+  - id: xss-detection
+    message: "Possible XSS vulnerability detected"
+    pattern: |
+      fmt.Fprintf(
+        {{.ResponseWriter}},
+        "${{ident}}{{.HTML}}"
+      )
+    filters:
+      - "${{ident}}{{.HTML}}"
+        - contains: "{{.UserInput}}"
+  - id: xss-detection
+    message: "Possible XSS vulnerability detected"
+    pattern: |
+      fmt.Fprint(
+        {{.ResponseWriter}},
+        "${{ident}}{{.HTML}}"
+      )
+    filters:
+      - "${{ident}}{{.HTML}}"
+        - contains: "{{.UserInput}}"
+  - id: xss-detection
+    message: "Possible XSS vulnerability detected"
+    pattern: |
+      {{.ResponseWriter}}.Write([]byte("${{ident}}{{.HTML}}"))
+    filters:
+      - "${{ident}}{{.HTML}}"
+        - contains: "{{.UserInput}}"

@@ -1,0 +1,29 @@
+rules:
+##
+# This rule looks for specific function calls such as require and 
+# import and checks if they match known vulnerable libraries, 
+# if so it raises an alert with the message "Possible use of component 
+# with known vulnerabilities detected".
+##
+  - id: known-vulnerabilities
+    message: "Possible use of component with known vulnerabilities detected"
+    pattern: |
+      _ "{{.ImportPath}}"
+  - id: known-vulnerabilities
+    message: "Possible use of component with known vulnerabilities detected"
+    pattern: |
+      import ({{.ImportPath}})
+  - id: known-vulnerabilities
+    message: "Possible use of component with known vulnerabilities detected"
+    pattern: |
+      {{.FunctionCall}}({{.ImportPath}})
+    filters:
+      - {{.FunctionCall}}
+        - equals: "require"
+  - id: known-vulnerabilities
+    message: "Possible use of component with known vulnerabilities detected"
+    pattern: |
+      {{.FunctionCall}}("{{.ImportPath}}")
+    filters:
+      - {{.FunctionCall}}
+        - equals: "import"

@@ -1,0 +1,13 @@
+rules:
+  - id: hardcoded-credentials
+    patterns:
+    - pattern: 'username=".*"'
+    - pattern: 'password=".*"'
+    - pattern: 'apiKey=".*"'
+    - pattern: 'secret=".*"'
+    - pattern: 'accessKey=".*"'
+    - pattern: 'secretKey=".*"'
+    - pattern: 'access_token=".*"'
+    - pattern: 'private_key=".*"'
+    - pattern: 'Bearer .*'
+    message: "Potential hard-coded credentials found. Use environment variables or a secure configuration management system instead."

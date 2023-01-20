@@ -1,0 +1,84 @@
+rules:
+##
+# This rule looks for a specific method call http.ListenAndServe or http.ListenAndServeTLS and checks if the port being used is 80 and default cert and key paths are being used, if so it raises an alert with 
+# the message "Possible security misconfiguration vulnerability detected".
+##
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      http.ListenAndServe(":{{.Port}}", nil)
+    filters:
+      - {{.Port}}
+        - equals: "80"
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      http.ListenAndServeTLS(":{{.Port}}", "{{.CertPath}}", "{{.KeyPath}}", nil)
+    filters:
+      - {{.CertPath}}
+        - equals: "server.crt"
+      - {{.KeyPath}}
+        - equals: "server.key"
+
+##
+# This rule looks for a specific function calls such as flag.String, log.SetFlags, log.SetOutput
+##
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      flag.String("{{.Flag}}", "{{.DefaultValue}}", "{{.Usage}}")
+    filters:
+      - {{.DefaultValue}}
+        - equals: "admin"
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      log.SetFlags({{.Flag}})
+    filters:
+      - {{.Flag}}
+        - equals: "log.LstdFlags"
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      log.SetOutput({{.Output}})
+    filters:
+      - {{.Output}}
+        - equals: "os.Stdout"
+##
+# This rule looks for a specific function calls such as os.OpenFile, os.Create and checks if they have a file path that ends with .txt or starts with "./" and also having a permission of 0777, if so it raises an alert with 
+# the message "Possible security misconfiguration vulnerability detected".
+##
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      {{.FunctionCall}}("{{.Path}}", {{.Permission}})
+    filters:
+      - {{.Path}}
+        - ends-with: ".txt"
+      - {{.Permission}}
+        - equals: "0777"
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      {{.FunctionCall}}("{{.Path}}", {{.Permission}})
+    filters:
+      - {{.Path}}
+        - starts-with: "./"
+      - {{.Permission}}
+        - equals: "0777"
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      var {{.Var}} = {{.FunctionCall}}("{{.Path}}")
+    filters:
+      - {{.Path}}
+        - starts-with: "./config.json"
+  - id: security-misconfiguration
+    message: "Possible security misconfiguration vulnerability detected"
+    pattern: |
+      {{.FunctionCall}}("{{.Path}}", {{.Permission}})
+    filters:
+      - {{.Path}}
+        - ends-with: ".env"
+      - {{.Permission}}
+        - equals: "0600"

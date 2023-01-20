@@ -1,0 +1,173 @@
+package main
+
+import (
+    "fmt"
+    "os"
+
+    "github.com/aws/aws-sdk-go/aws"
+    "github.com/aws/aws-sdk-go/aws/session"
+    "github.com/aws/aws-sdk-go/service/ec2"
+    "github.com/aws/aws-sdk-go/service/s3"
+    "github.com/aws/aws-sdk-go/service/iam"
+    "github.com/aws/aws-sdk-go/service/rds"
+    "github.com/aws/aws-sdk-go/service/lambda"
+    "github.com/aws/aws-sdk-go/service/cloudfront"
+    // and so on for other services
+)
+
+func main() {
+    // Create an AWS session
+    sess := session.Must(session.NewSessionWithOptions(session.Options{
+        SharedConfigState: session.SharedConfigEnable,
+    }))
+
+    // Create EC2 service client
+    ec2Svc := ec2.New(sess)
+    // Create S3 service client
+    s3Svc := s3.New(sess)
+    // Create IAM service client
+    iamSvc := iam.New(sess)
+    // Create RDS service client
+    rdsSvc := rds.New(sess)
+    // Create Lambda service client
+    lambdaSvc := lambda.New(sess)
+    // Create CloudFront service client
+    cloudfrontSvc := cloudfront.New(sess)
+    // and so on for other services
+
+    // Define the parameters for the DescribeInstances API
+    ec2Params := &ec2.DescribeInstancesInput{}
+    // Define the parameters for the ListBuckets API
+    s3Params := &s3.ListBucketsInput{}
+    // Define the parameters for the ListUsers API
+    iamParams := &iam.ListUsersInput{}
+    // Define the parameters for the DescribeDBInstances API
+    rdsParams := &rds.DescribeDBInstancesInput{}
+    // Define the parameters for the ListFunctions API
+    lambdaParams := &lambda.ListFunctionsInput{}
+    // Define the parameters for the ListDistributions API
+    cloudfrontParams := &cloudfront.ListDistributionsInput{}
+    // and so on for other services
+
+    // Make the API call to retrieve a list of EC2 instances
+    ec2Result, err := ec2Svc.DescribeInstances(ec2Params)
+    if err != nil {
+        fmt.Println("Error", err)
+        os.Exit(1)
+    }
+    // Make the API call to retrieve a list of S3 buckets
+    s3Result, err := s3Svc.ListBuckets(s3Params)
+    if err != nil {
+    fmt.Println("Error", err)
+    os.Exit(1)
+    }
+    // Make the API call to retrieve a list of IAM users
+    iamResult, err := iamSvc.ListUsers(iamParams)
+    if err != nil {
+    fmt.Println("Error", err)
+    os.Exit(1)
+    }
+    // Make the API call to retrieve a list of RDS instances
+    rdsResult, err := rdsSvc.DescribeDBInstances(rdsParams)
+    if err != nil {
+    fmt.Println("Error", err)
+    os.Exit(1)
+    }
+    // Make the API call to retrieve a list of Lambda functions
+    lambdaResult, err := lambdaSvc.ListFunctions(lambdaParams)
+    if err != nil {
+    fmt.Println("Error", err)
+    os.Exit(1)
+    }
+    // Make the API call to retrieve a list of CloudFront distributions
+    cloudfrontResult, err := cloudfrontSvc.ListDistributions(cloudfrontParams)
+    if err != nil {
+    fmt.Println("Error", err)
+    os.Exit(1)
+    }
+    // and so on for other services
+    // Loop through the EC2 instances and check for vulnerabilities
+for _, reservation := range ec2Result.Reservations {
+    for _, instance := range reservation.Instances {
+        // Check for vulnerable software on the instance
+        checkEC2Vulnerabilities(instance)
+        // Check for open security group ports
+        checkEC2SecurityGroups(instance, ec2Svc)
+    }
+}
+// Loop through the S3 buckets and check for vulnerabilities
+for _, bucket := range s3Result.Buckets {
+    // Check for vulnerable software on the bucket
+    checkS3Vulnerabilities(bucket, s3Svc)
+}
+// Loop through the IAM users and check for vulnerabilities
+for _, user := range iamResult.Users {
+    // Check for vulnerable policies on the user
+    checkIAMVulnerabilities(user, iamSvc)
+}
+// Loop through the RDS instances and check for vulnerabilities
+for _, instance := range rdsResult.DBInstances {
+    // Check for vulnerable software on the instance
+// Check for vulnerable software on the instance
+checkRDSVulnerabilities(instance)
+// Check for open security group ports
+checkRDSSecurityGroups(instance, rdsSvc)
+}
+// Loop through the Lambda functions and check for vulnerabilities
+for _, function := range lambdaResult.Functions {
+// Check for vulnerable software on the function
+checkLambdaVulnerabilities(function)
+// Check for open security group ports
+checkLambdaSecurityGroups(function, lambdaSvc)
+}
+// Loop through the CloudFront distributions and check for vulnerabilities
+for _, distribution := range cloudfrontResult.Distributions {
+// Check for vulnerable software on the distribution
+checkCloudFrontVulnerabilities(distribution)
+// Check for open security group ports
+checkCloudFrontSecurityGroups(distribution, cloudfrontSvc)
+}
+// and so on for other services
+}
+
+func checkEC2Vulnerabilities(instance *ec2.Instance) {
+// Code to check for vulnerable software on the EC2 instance
+}
+
+func checkEC2SecurityGroups(instance *ec2.Instance, svc *ec2.EC2) {
+// Code to check for open security group ports on the EC2 instance
+}
+
+func checkS3Vulnerabilities(bucket *s3.Bucket, svc *s3.S3) {
+// Code to check for vulnerable software on the S3 bucket
+}
+
+func checkIAMVulnerabilities(user *iam.User, svc *iam.IAM) {
+// Code to check for vulnerable policies on the IAM user
+}
+
+func checkRDSVulnerabilities(instance *rds.DBInstance) {
+// Code to check for vulnerable software on the RDS instance
+}
+
+func checkRDSSecurityGroups(instance *rds.DBInstance, svc *rds.RDS) {
+// Code to check for open security group ports on the RDS instance
+}
+
+func checkLambdaVulnerabilities(function *lambda.FunctionConfiguration) {
+// Code to check for vulnerable software on the Lambda function
+}
+
+func checkLambdaSecurityGroups(function *lambda.FunctionConfiguration, svc *lambda.Lambda) {
+// Code to check for open security group ports on the Lambda function
+}
+
+func checkCloudFrontVulnerabilities(distribution *cloudfront.Distribution) {
+// Code to check for vulnerable software on the CloudFront distribution
+}
+
+func checkCloudFrontSecurityGroups(distribution *cloudfront.Distribution, svc *cloudfront.CloudFront) {
+// Code to check for open security group ports on the CloudFront distribution
+}
+
+

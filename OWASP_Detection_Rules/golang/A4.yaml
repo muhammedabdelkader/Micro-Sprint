@@ -1,0 +1,24 @@
+# This rule looks for a function call where the parameter is 
+# directly used from user input or a property of the user input 
+# and raises an alert with the message "Possible insecure direct object 
+# references vulnerability detected".
+
+rules:
+  - id: insecure-direct-object-references
+    message: "Possible insecure direct object references vulnerability detected"
+    pattern: |
+      {{.SensitiveFunctionCall}}(
+        {{.UserInput}}
+      )
+  - id: insecure-direct-object-references
+    message: "Possible insecure direct object references vulnerability detected"
+    pattern: |
+      {{.SensitiveFunctionCall}}(
+        {{.UserInput}}.ID
+      )
+  - id: insecure-direct-object-references
+    message: "Possible insecure direct object references vulnerability detected"
+    pattern: |
+      {{.SensitiveFunctionCall}}(
+        {{.UserInput}}["ID"]
+      )

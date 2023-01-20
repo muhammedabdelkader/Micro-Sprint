@@ -1,0 +1,28 @@
+rules:
+##
+# This rule looks for specific function calls such as http.Redirect 
+# and checks if they have user input as an argument, 
+# if so it raises an alert with the message "Possible unvalidated redirect or forward detected".
+##
+  - id: unvalidated-redirects
+    message: "Possible unvalidated redirect or forward detected"
+    pattern: |
+      http.Redirect(w, r, {{.UserInput}}, http.StatusFound)
+##
+# This rule looks for specific function calls such as http.Redirect, 
+# w.Header().Set("Location", ...) and http.SetCookie and checks 
+# if they have user input as an argument, if so it raises an alert with 
+# the message "Possible unvalidated redirect or forward detected".
+##
+  - id: unvalidated-redirects
+    message: "Possible unvalidated redirect or forward detected"
+    pattern: |
+      w.Header().Set("Location", {{.UserInput}})
+      w.WriteHeader(http.StatusFound)
+  - id: unvalidated-redirects
+    message: "Possible unvalidated redirect or forward detected"
+    pattern: |
+      {{.FunctionCall}}({{.UserInput}})
+    filters:
+      - {{.FunctionCall}}
+        - equals: "http.SetCookie"

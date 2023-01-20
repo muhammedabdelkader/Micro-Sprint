@@ -1,0 +1,53 @@
+package main
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2018-10-01/containerinstance"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure/auth"
+)
+/*
+Uses the Azure Go SDK to create a new instance of the containerinstance client, which you can then use to retrieve information about your Azure Container Service (ACS) resources, such as Container Groups and Container Instances. It then prints out the information obtained for each resource type.
+*/
+func main() {
+    // create an authorizer
+    authorizer, err := auth.NewAuthorizerFromEnvironment()
+    if err != nil {
+        fmt.Printf("Failed to get an Authorizer: %v", err)
+        return
+    }
+
+    // Create a new Container Instance client
+    containerClient := containerinstance.NewClient("YOUR_SUBSCRIPTION_ID")
+    containerClient.Authorizer = authorizer
+
+    // Get all container groups
+    result, err := containerClient.List(context.Background(), "YOUR_RESOURCE_GROUP")
+    if err != nil {
+        fmt.Printf("Failed to list container groups: %v", err)
+        return
+    }
+
+    // Print information about container groups
+    fmt.Println("Container Groups:")
+    for _, group := range result.Values() {
+        fmt.Printf("- Container Group Name: %s, Location: %s, OS Type: %s, Provisioning State: %s\n",
+            *group.Name, *group.Location, group.OsType, group.ProvisioningState)
+    }
+
+    // Get all container instances
+    for _, group := range result.Values() {
+        instances, err := containerClient.ListInstances(context.Background(), "YOUR_RESOURCE_GROUP", *group.Name)
+        if err != nil {
+            fmt.Printf("Failed to list container instances: %v", err)
+            return
+        }
+        fmt.Println("Container Instances:")
+        for _, instance := range instances.Values() {
+            fmt.Printf("- Instance name: %s, Image: %s, Image pull policy: %s\n",
+                *instance.Name, *instance.Image, instance.ImagePullPolicy)
+        }
+    }
+}

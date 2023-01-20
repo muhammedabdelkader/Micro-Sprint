@@ -1,0 +1,44 @@
+# This rule looks for calls to the sql.Open, db.Exec, db.Query, and db.QueryRow functions 
+# and checks if the first parameter (the SQL query) contains a variable that has been derived from user input. If it does, 
+# it will raise an alert with the message "Possible SQL injection detected".
+
+rules:
+  - id: sql-injection-detection
+    message: "Possible SQL injection detected"
+    pattern: |
+      sql.Open(
+        _,
+        "${{ident}}{{.DataSourceName}}"
+      )
+    filters:
+      - "${{ident}}{{.DataSourceName}}"
+        - contains: "{{.UserInput}}"
+  - id: sql-injection-detection
+    message: "Possible SQL injection detected"
+    pattern: |
+      db.Exec(
+        "${{ident}}{{.SQLQuery}}"
+      )
+    filters:
+      - "${{ident}}{{.SQLQuery}}"
+        - contains: "{{.UserInput}}"
+  - id: sql-injection-detection
+    message: "Possible SQL injection detected"
+    pattern: |
+      db.Query(
+        "${{ident}}{{.SQLQuery}}"
+      )
+    filters:
+      - "${{ident}}{{.SQLQuery}}"
+        - contains: "{{.UserInput}}"
+  - id: sql-injection-detection
+    message: "Possible SQL injection detected"
+    pattern: |
+      db.QueryRow(
+        "${{ident}}{{.SQLQuery}}"
+      )
+    filters:
+      - "${{ident}}{{.SQLQuery}}"
+        - contains: "{{.UserInput}}"
+
+

@@ -1,0 +1,37 @@
+rules:
+##
+# This rule looks for the copy function and checks 
+# if it's called on a variable that has a len or cap 
+# field, which are commonly used to define the size 
+# of a buffer in Go. If the rule finds such a call, 
+# it raises an alert with the message "Possible buffer overflow detected".
+##
+  - id: buffer-overflow
+    message: "Possible buffer overflow detected"
+    pattern: |
+      copy({{.Buffer}}, {{.Source}})
+    filters:
+      - {{.Buffer}}
+        - any:
+          - has_field: "len"
+          - has_field: "cap"
+##
+# This rule looks for specific function calls such as 
+# memcpy, make, new and checks if they are used to create a buffer with a fixed size, 
+# if so it raises an alert with the message "Possible buffer overflow detected".
+##
+  - id: buffer-overflow
+    message: "Possible buffer overflow detected"
+    pattern: |
+      {{.FunctionCall}}({{.Buffer}}, {{.Source}}, {{.Size}})
+    filters:
+      - {{.FunctionCall}}
+        - equals: "memcpy"
+  - id: buffer-overflow
+    message: "Possible buffer overflow detected"
+    pattern: |
+      {{.Buffer}} = make([]{{.Type}}, {{.Size}})
+  - id: buffer-overflow
+    message: "Possible buffer overflow detected"
+    pattern: |
+      {{.Buffer}} = new([{{.Size}}]{{.Type}})

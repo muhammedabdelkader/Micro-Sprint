@@ -1,0 +1,39 @@
+rules:
+##
+# This rule looks for specific function calls such as template.HTMLEscape and http.Redirect and checks if they have user input as an argument, 
+# if so it raises an alert with the message "Possible CSRF vulnerability detected".
+##
+  - id: csrf-vulnerability
+    message: "Possible CSRF vulnerability detected"
+    pattern: |
+      {{.FunctionCall}}("{{.Attribute}}", {{.UserInput}})
+    filters:
+      - {{.Attribute}}
+        - equals: "action"
+  - id: csrf-vulnerability
+    message: "Possible CSRF vulnerability detected"
+    pattern: |
+      {{.FunctionCall}}({{.UserInput}})
+    filters:
+      - {{.FunctionCall}}
+        - equals: "http.Redirect"
+##
+# This rule looks for specific function calls such as template.HTMLEscape and http.Redirect 
+# and also checks for HTML form tags and attributes that use user input, 
+# if so it raises an alert with the message "Possible CSRF vulnerability detected".
+##
+  - id: csrf-vulnerability
+    message: "Possible CSRF vulnerability detected"
+    pattern: |
+      <form {{.Attribute}}="{{.UserInput}}">
+  - id: csrf-vulnerability
+    message: "Possible CSRF vulnerability detected"
+    pattern: |
+      <form {{.Attribute}}={{.UserInput}}>
+  - id: csrf-vulnerability
+    message: "Possible CSRF vulnerability detected"
+    pattern: |
+      {{.FunctionCall}}("{{.Attribute}}", {{.UserInput}})
+    filters:
+      - {{.Attribute}}
+        - equals: "method"
