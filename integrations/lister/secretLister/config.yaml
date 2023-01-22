@@ -1,0 +1,53 @@
+jenkins:
+  url: http://jenkins.example.com
+  username: admin
+  password: password
+
+bitbucket:
+  username: myusername
+  password: mypassword
+
+buildkite:
+  access_token: abc123
+  organization: myorg
+
+circleci:
+  access_token: def456
+  username: myusername
+
+github:
+  token: xxxxxxx
+  organization: myorg
+
+gitlab:
+  url: https://gitlab.com
+  token: xxxxxxx
+
+kubernetes:
+  url: https://k8s.example.com
+  token: xxxxxxx
+
+ecs:
+  access_key: xxxxxxx
+  secret_key: xxxxxxx
+
+aks:
+  subscription_id: xxxxxxx
+  client_id: xxxxxxx
+  client_secret: xxxxxxx
+  tenant_id: xxxxxxx
+
+gke:
+  project_id: xxxxxxx
+  service_account_file: xxxxxxx
+
+acs:
+  subscription_id: xxxxxxx
+  client_id: xxxxxxx
+  client_secret: xxxxxxx
+  tenant_id: xxxxxxx
+
+aws:
+  access_key: xxxxxxx
+  secret_key: xxxxxxx
+  region: us-west-2
