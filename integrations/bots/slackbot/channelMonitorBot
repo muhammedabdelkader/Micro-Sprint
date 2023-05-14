@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/slack-go/slack"
+)
+// polling pattern : read slack messages
+const (
+	slack_token = ""
+	channelsId  = ""
+)
+
+func main() {
+	// Set up the Slack API client with your bot token
+	api := slack.New((slack_token))
+
+	// Set up the options for the message history API call
+	historyOpts := slack.GetConversationHistoryParameters{
+		ChannelID: (channelsId),
+		Limit:     100,
+	}
+
+	for {
+		// Call the Slack API to get the message history for the channel
+		messages, err := api.GetConversationHistory(&historyOpts)
+		if err != nil {
+			fmt.Println("Error getting conversation history:", err)
+			continue
+		}
+
+		// Iterate over the messages in reverse order (most recent first)
+		for i := len(messages.Messages) - 1; i >= 0; i-- {
+			message := messages.Messages[i]
+			if message.Type == "message" {
+				// Process the message (e.g. log it, send a reply, etc.)
+				fmt.Println("Received message:", message.Text, " : ", message.Timestamp)
+			}
+		}
+
+		// Wait for 20 minutes before checking again
+		time.Sleep(1 * time.Minute)
+	}
+}
