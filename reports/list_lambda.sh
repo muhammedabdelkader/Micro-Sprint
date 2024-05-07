@@ -1,4 +1,5 @@
 #!/bin/bash
+## You Need to have AWS credentials valid
 ## Get the list of AWS regions
 regions=$(aws ec2 describe-regions --query "Regions[].RegionName" --output text)
 accountId=$(aws sts get-caller-identity | jq '.Account')
@@ -11,4 +12,8 @@ for region in $regions; do
     echo "Listing Lambda functions in region: $region"
     aws lambda list-functions --region $region > ".lambda_${accountId}_${region}"
         done
-
+        
+## Filter Example 
+##
+# for j in $(ls ); do cd $j; echo $j; for i in $(ls -ah "." | grep ".lambda" );do cat "${i}" | jq ".Functions[]| select (.Runtime==\"go1.x\") | .FunctionName,.FunctionArn";done;cd .. ;  done
+##
