@@ -1,4 +1,8 @@
 #!/bin/bash
+################################################################################################################################################
+## Purpose: Migrating AWS Lambda functions from the Go1.x runtime to the custom runtime on Amazon Linux 2
+## https://aws.amazon.com/blogs/compute/migrating-aws-lambda-functions-from-the-go1-x-runtime-to-the-custom-runtime-on-amazon-linux-2/
+################################################################################################################################################
 ## You Need to have AWS credentials valid
 ## Get the list of AWS regions
 regions=$(aws ec2 describe-regions --query "Regions[].RegionName" --output text)
